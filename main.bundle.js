@@ -112,6 +112,8 @@ module.exports = "\n<!-- <ng4-loading-spinner [threshold]=\"50\" [loadingText]=\
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ng2_toastr_src_toast_manager__ = __webpack_require__("./node_modules/ng2-toastr/src/toast-manager.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ng2_toastr_src_toast_manager___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_ng2_toastr_src_toast_manager__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_pairwise__ = __webpack_require__("./node_modules/rxjs/_esm5/add/operator/pairwise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -123,12 +125,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
 var AppComponent = (function () {
-    function AppComponent(vcr, toastr) {
+    function AppComponent(vcr, toastr, router) {
         this.vcr = vcr;
         this.toastr = toastr;
+        this.router = router;
         this.title = 'app works!';
         this.toastr.setRootViewContainerRef(vcr);
+        this.router.events.pairwise().subscribe(function (event) {
+            // console.log(event);
+        });
     }
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -137,7 +145,8 @@ var AppComponent = (function () {
             styles: [__webpack_require__("./src/app/app.component.css")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"],
-            __WEBPACK_IMPORTED_MODULE_1_ng2_toastr_src_toast_manager__["ToastsManager"]])
+            __WEBPACK_IMPORTED_MODULE_1_ng2_toastr_src_toast_manager__["ToastsManager"],
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["Router"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -875,7 +884,7 @@ var ForgotPasswordComponent = (function () {
 /***/ "./src/app/auth/login/login.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"login\">\n  <img src=\"assets/images/logo.png\" alt=\"logo\">\n  <form [formGroup]=\"signInForm\" (ngSubmit)=\"signIn(signInForm)\">\n    <span>\n      <h3 class=\"first\">Email</h3>\n      <input class=\"login-input\" name=\"signinEmail\" pattern=\"^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$\" id=\"signinEmail\"  type=\"email\" size=\"30\" \n      pInputText placeholder=\"Enter your Username or email id\" formControlName=\"signinEmail\" required=\"required\" data-error=\"Email is required.\">\n    </span>\n    <span *ngIf=\" !signInForm.get('signinPassword').valid && signInForm.get('signinPassword').touched && signInForm.hasError('required', 'signinEmail')\"> email is required</span>\n    <span *ngIf=\" !signInForm.get('signinPassword').valid && signInForm.get('signinPassword').touched && signInForm.hasError('pattern', 'signinEmail')\">Valid email is required</span>\n    <span>\n      <h3 class=\"first\">Password</h3>\n      <input class=\"login-input\" name=\"signinPassword\" id=\"signinPassword\"  type=\"password\" size=\"30\" \n        pInputText  placeholder=\"Enter your Password\" formControlName=\"signinPassword\" required=\"required\" data-error=\"Password is required.\">\n    </span>\n    <label for=\"signinPassword\" class=\"invalid-feedback\" *ngIf=\"!signInForm.get('signinPassword').valid && signInForm.get('signinPassword').touched\">Password can't be blank</label>\n    <h3 class=\"first login-submit\">\n      <button pButton type=\"submit\" class=\"ui-button-danger btn-orange\">Login</button>\n    </h3>\n    <a href=\"\" class=\"logn-forgot\">Forgot Password?</a>\n  </form>\n</div>\n"
+module.exports = "<div class=\"login\">\n    <img src=\"assets/images/logo.png\" alt=\"logo\">\n    <form class=\"form-group\" [formGroup]=\"signInForm\" (ngSubmit)=\"signIn(signInForm)\">\n        <span>\n      <h3 class=\"first\">Email</h3>\n      <input class=\"login-input\" name=\"signinEmail\" pattern=\"^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$\" id=\"signinEmail\"  type=\"email\" size=\"30\" \n      pInputText placeholder=\"Enter your Username or email id\" formControlName=\"signinEmail\" required=\"required\" data-error=\"Email is required.\">\n    </span>\n        <span *ngIf=\" !signInForm.get('signinPassword').valid && signInForm.get('signinPassword').touched && signInForm.hasError('required', 'signinEmail')\"> email is required</span>\n        <span *ngIf=\" !signInForm.get('signinPassword').valid && signInForm.get('signinPassword').touched && signInForm.hasError('pattern', 'signinEmail')\">Valid email is required</span>\n        <span>\n      <h3 class=\"first\">Password</h3>\n      <input class=\"login-input\" name=\"signinPassword\" id=\"signinPassword\"  type=\"password\" size=\"30\" \n        pInputText  placeholder=\"Enter your Password\" formControlName=\"signinPassword\" required=\"required\" data-error=\"Password is required.\">\n    </span>\n        <label for=\"signinPassword\" class=\"invalid-feedback\" *ngIf=\"!signInForm.get('signinPassword').valid && signInForm.get('signinPassword').touched\">Password can't be blank</label>\n        <h3 class=\"first login-submit\">\n            <button pButton type=\"submit\" class=\"ui-button-danger btn-orange\">Login</button>\n        </h3>\n        <a href=\"\" class=\"logn-forgot\">Forgot Password?</a>\n    </form>\n</div>"
 
 /***/ }),
 
@@ -1354,7 +1363,7 @@ var QuadlogicAuthService = (function () {
     }
     //sign in api call
     QuadlogicAuthService.prototype.signIn = function (params) {
-        return this._http.post(__WEBPACK_IMPORTED_MODULE_9__environments_environment__["a" /* environment */].host + '/login', params);
+        return this._http.post(__WEBPACK_IMPORTED_MODULE_9__environments_environment__["a" /* environment */].host + 'login', params);
     };
     //update token call checking for auth token if not will send refresh token
     QuadlogicAuthService.prototype.updateRefreshToken = function () {
@@ -1566,8 +1575,8 @@ var TokenInterceptor = (function () {
             // this._tokenService.open()
             headers = {
                 setHeaders: {
-                    authentication_token: localStorage.getItem("authentication_token"),
-                    refresh_token: localStorage.getItem("refresh_token")
+                    'authentication-token': localStorage.getItem("authentication_token"),
+                    'refresh-token': localStorage.getItem("refresh_token")
                 }
             };
         }
@@ -1743,14 +1752,14 @@ var TokenService = (function () {
 /***/ "./src/app/header/header.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "header { width: 100%; height: 100px; border-bottom: solid 1px #d2d2d2; position: absolute; left:0px; right: 0px; padding: 0px; margin: 0px; }\n.logo { width: 180px; float: left; height: auto;}\n"
+module.exports = "header {\n    width: 100%;\n    height: 100px;\n    border-bottom: solid 1px #d2d2d2;\n    position: fixed;\n    left: 0px;\n    right: 0px;\n    padding: 0px;\n    margin: 0px;\n    z-index: 999;\n    background: #fff;\n}\n\n.logo {\n    width: 180px;\n    float: left;\n    height: auto;\n}"
 
 /***/ }),
 
 /***/ "./src/app/header/header.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header>\n\t<div class=\"quad-container\">\n\t\t<div class=\"red-bar\"></div>\n\t\t<div class=\"ql-mbar\">\n\t\t\t<img class=\"logo\" src=\"../assets/images/logo.png\" alt=\"logo\">\n\t\t\t<p-menubar [model]=\"items\">\n\t\t\t\t<button pButton label=\"Logout\" icon=\"fa-sign-out\"></button>\n\t\t\t</p-menubar>\n\t\t</div>\n\t</div>\n</header>"
+module.exports = "<header>\n\t<div class=\"quad-container\">\n\t\t<div class=\"red-bar\"></div>\n\t\t<div class=\"ql-mbar\">\n\t\t\t<img class=\"logo\" src=\"../assets/images/logo.png\" alt=\"logo\">\n\t\t\t<p-menubar [model]=\"items\">\n\t\t\t\t<button pButton label=\"Logout\" class=\"ui-button-secondary\" *ngIf=\"!showButton\" (click) = \"logout()\">Logout</button>\n\t\t\t</p-menubar>\n\t\t</div>\n\t</div>\n</header>"
 
 /***/ }),
 
@@ -1760,6 +1769,8 @@ module.exports = "<header>\n\t<div class=\"quad-container\">\n\t\t<div class=\"r
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HeaderComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_app_sites_services_user_service__ = __webpack_require__("./src/app/sites/services/user.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1770,32 +1781,56 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var HeaderComponent = (function () {
-    function HeaderComponent() {
+    function HeaderComponent(router, userService) {
+        this.router = router;
+        this.userService = userService;
         this.showButton = false;
     }
     HeaderComponent.prototype.ngOnInit = function () {
+        var _this = this;
         // sekhar
         // menu items to be displayed in menu
-        this.items = [
-            {
-                label: 'Sites',
-                icon: 'fa-building',
-                url: 'sites'
-            },
-            {
-                label: 'Rates',
-                icon: 'fa-money'
-            },
-            {
-                label: 'Collections',
-                icon: 'fa-money'
-            },
-            {
-                label: 'Reports',
-                icon: 'fa-file'
+        this.router.events.subscribe(function (e) {
+            if (e instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["NavigationStart"]) {
+                if (e.url.split('/')[1] == 'auth') {
+                    _this.items = [];
+                    _this.showButton = true;
+                }
+                else {
+                    _this.items = [
+                        {
+                            label: 'Sites',
+                            icon: 'fa-building',
+                            url: 'sites'
+                        },
+                        {
+                            label: 'Rates',
+                            icon: 'fa-money'
+                        },
+                        {
+                            label: 'Collections',
+                            icon: 'fa-money'
+                        },
+                        {
+                            label: 'Reports',
+                            icon: 'fa-file'
+                        }
+                    ];
+                    _this.showButton = false;
+                }
             }
-        ];
+        });
+    };
+    HeaderComponent.prototype.logout = function () {
+        var _this = this;
+        this.userService.logout().subscribe(function (res) {
+            console.log(res);
+            localStorage.clear();
+            _this.router.navigate(["/auth/login"]);
+        });
     };
     HeaderComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -1803,7 +1838,7 @@ var HeaderComponent = (function () {
             template: __webpack_require__("./src/app/header/header.component.html"),
             styles: [__webpack_require__("./src/app/header/header.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["Router"], __WEBPACK_IMPORTED_MODULE_2_app_sites_services_user_service__["a" /* UserService */]])
     ], HeaderComponent);
     return HeaderComponent;
 }());
@@ -1815,7 +1850,7 @@ var HeaderComponent = (function () {
 /***/ "./src/app/mid-body/mid-body.component.css":
 /***/ (function(module, exports) {
 
-module.exports = ".quadlogic-mid-body { width:100%; float:left; height:300px; margin-top: 100px;}"
+module.exports = ".quadlogic-mid-body { width:100%; float:left; height:300px; margin-top: 101px;}"
 
 /***/ }),
 
@@ -2447,6 +2482,9 @@ var AppInitService = (function () {
             //   )
             return;
         }
+        else {
+            this.injector.get(__WEBPACK_IMPORTED_MODULE_0__angular_router__["Router"]).navigate(['/auth/login/']);
+        }
     };
     AppInitService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])(),
@@ -2761,7 +2799,7 @@ module.exports = ""
 /***/ "./src/app/sites/meter-page/meter-page.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<div style=\"width:100%; float:left; height:auto\">\n  <div class=\"ui-widget-header ql-search ql-ovv-users-search-cont\">\n    \n   \n    <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n  \n    <!-- <p-dropdown [options]=\"cities1\" [group]=\"true\" class=\"float-left\" ></p-dropdown> -->\n    <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Search...\">\n    <p-fileUpload mode=\"basic\" name=\"demo[]\"   maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n    <button type=\"button\" (click)=\"showDialog()\" pButton style=\"float:right;\">  Add User</button>\n    </div>\n    \n  \n  \n  <p-dataTable [value]=\"items\" scrollable=\"true\" [rows]=\"5\" [globalFilter]=\"gb\" #dt >\n    <p-column field=\"virtual\" header=\"Virtual Meter ID\" [sortable]=\"true\"></p-column>\n    <p-column field=\"meterid\" header=\"Meter ID\" [sortable]=\"true\"></p-column>\n    <p-column field=\"multiplier\" header=\"Multiplier\" [sortable]=\"true\"></p-column>\n    <p-column field=\"units\" header=\"Units\" [sortable]=\"true\"></p-column> \n    <p-column field=\"utility\" header=\"Utility Type\" [sortable]=\"true\"></p-column> \n    <p-column styleClass=\"col-button\">\n      <ng-template pTemplate=\"header\">\n          <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n      </ng-template>\n      <ng-template let-car=\"rowData\" pTemplate=\"body\">\n          <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n      </ng-template>\n  </p-column>\n  </p-dataTable>\n  \n  </div>\n  \n  \n\n\n\n<p-dialog header=\"Godfather I\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n  <span>\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-6\">\n            <label>Section Name</label>\n              <div class=\"ui-inputgroup\">\n                 \n                  <input type=\"text\" pInputText placeholder=\"Username\">         \n              </div>\n          </div>\n          <div class=\"ui-g-6\">\n              <label>Section Name</label>\n                <div class=\"ui-inputgroup\">\n                   \n                    <input type=\"text\" pInputText placeholder=\"Username\">         \n                </div>\n            </div>\n<div class=\"ui-g-6\">\n  <p-dropdown [options]=\"cities\" placeholder=\"Select a City\"></p-dropdown>\n\n  <!-- <p>Selected City: {{selectedCity ? selectedCity.name : 'none'}}</p> -->\n</div>\n\n          </div>\n\n  </span>\n      <p-footer>\n          <button type=\"button\" pButton icon=\"fa-check\" (click)=\"display=false\" label=\"Yes\"></button>\n          <button type=\"button\" pButton icon=\"fa-close\" (click)=\"display=false\" label=\"No\"></button>\n      </p-footer>\n</p-dialog>"
+module.exports = "<div style=\"width:100%; float:left; height:auto\">\n    <div class=\"ui-widget-header ql-search ql-ovv-users-search-cont\">\n\n\n        <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n\n        <!-- <p-dropdown [options]=\"cities1\" [group]=\"true\" class=\"float-left\" ></p-dropdown> -->\n        <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Search...\">\n        <p-fileUpload mode=\"basic\" name=\"file\" url=\"http://18.222.105.182/upload_records?name=meters\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n        <button type=\"button\" (click)=\"showDialog()\" pButton style=\"float:right;\">  Add User</button>\n    </div>\n\n\n\n    <p-dataTable [value]=\"meters\" scrollable=\"true\" reorderableColumns=\"true\" [rows]=\"10\" [paginator]=\"true\" [pageLinks]=\"10\" [rowsPerPageOptions]=\"[5,10,20]\" [globalFilter]=\"gb\" #dt>\n        <p-column field=\"virtual_id\" header=\"Virtual Meter ID\" [sortable]=\"true\"></p-column>\n        <p-column field=\"meter_id\" header=\"Meter ID\" [sortable]=\"true\"></p-column>\n        <p-column field=\"multiplier\" header=\"Multiplier\" [sortable]=\"true\"></p-column>\n        <p-column field=\"modifier\" header=\"Modifier\" [sortable]=\"true\"></p-column>\n        <p-column field=\"units\" header=\"Units\" [sortable]=\"true\"></p-column>\n        <p-column field=\"utility_type\" header=\"Utility Type\" [sortable]=\"true\"></p-column>\n        <p-column styleClass=\"col-button\">\n            <ng-template pTemplate=\"header\">\n                <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n            </ng-template>\n            <ng-template let-car=\"rowData\" pTemplate=\"body\">\n                <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n            </ng-template>\n        </p-column>\n    </p-dataTable>\n\n</div>\n\n\n\n\n\n<p-dialog header=\"Godfather I\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n    <span>\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-6\">\n            <label>Section Name</label>\n              <div class=\"ui-inputgroup\">\n                 \n                  <input type=\"text\" pInputText placeholder=\"Username\">         \n              </div>\n          </div>\n          <div class=\"ui-g-6\">\n              <label>Section Name</label>\n                <div class=\"ui-inputgroup\">\n                   \n                    <input type=\"text\" pInputText placeholder=\"Username\">         \n                </div>\n            </div>\n<div class=\"ui-g-6\">\n  <p-dropdown [options]=\"cities\" placeholder=\"Select a City\"></p-dropdown>\n\n  <!-- <p>Selected City: {{selectedCity ? selectedCity.name : 'none'}}</p> -->\n</div>\n\n          </div>\n\n  </span>\n    <p-footer>\n        <button type=\"button\" pButton icon=\"fa-check\" (click)=\"display=false\" label=\"Yes\"></button>\n        <button type=\"button\" pButton icon=\"fa-close\" (click)=\"display=false\" label=\"No\"></button>\n    </p-footer>\n</p-dialog>"
 
 /***/ }),
 
@@ -2771,6 +2809,7 @@ module.exports = "\n<div style=\"width:100%; float:left; height:auto\">\n  <div 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MeterPageComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sites_services_meter_page_service__ = __webpack_require__("./src/app/sites/services/meter-page.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2781,10 +2820,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var MeterPageComponent = (function () {
-    function MeterPageComponent() {
+    function MeterPageComponent(meterPageService) {
+        this.meterPageService = meterPageService;
+        this.display = false;
     }
     MeterPageComponent.prototype.ngOnInit = function () {
+        // this.meterPageService.getMeters()
+        // .subscribe(
+        //   (data)=>{
+        //     console.log(data);
+        //     this.meters = data.meters;
+        //   }
+        // )
+    };
+    MeterPageComponent.prototype.showDialog = function () {
+        this.display = true;
     };
     MeterPageComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2792,7 +2844,7 @@ var MeterPageComponent = (function () {
             template: __webpack_require__("./src/app/sites/meter-page/meter-page.component.html"),
             styles: [__webpack_require__("./src/app/sites/meter-page/meter-page.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__sites_services_meter_page_service__["a" /* MeterPageService */]])
     ], MeterPageComponent);
     return MeterPageComponent;
 }());
@@ -2811,7 +2863,7 @@ module.exports = ".ql-site-building { width: 140px; height: auto; float: left; }
 /***/ "./src/app/sites/overview/overview.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"ui-g-nopad ql-ovv-site-cont\" >\n  <img class=\"ql-site-building\" src=\"../assets/images/building.jpg\" alt=\"\">\n  <div class=\"ql-ovv-site-titles\">\n    <label>{{site.name}} Overview</label>\n    <p><i class=\"fa fa-map-marker\"></i> {{site.address_line1}}, {{site.address_line2}}, {{site.city}}, {{site.state}} - {{site.zipcode}}</p>\n</div>\n<i class=\"fa fa-pencil ql-ovv-edit\"></i>\n</div>\n\n\n\n<div style=\"width:100%; float:left; height:auto\">\n<div class=\"ui-widget-header ql-search ql-ovv-users-search-cont\">\n  \n  <label class=\"ql-ovv-user-title\">All Users</label>\n  <!-- <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i> -->\n\n  <!-- <p-dropdown [options]=\"cities1\" [group]=\"true\" class=\"float-left\" ></p-dropdown> -->\n  <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Search...\">\n  <button type=\"button\" (click)=\"showDialog()\" pButton >  Add User</button>\n  </div>\n  \n\n\n<p-dataTable [value]=\"users\" reorderableColumns=\"true\" scrollable=\"true\" [rows]=\"5\" [globalFilter]=\"gb\" #dt >\n  <p-column field=\"user_name\" header=\"Users\" [sortable]=\"true\"></p-column>\n  <p-column field=\"email\" header=\"Email ID\" [sortable]=\"true\"></p-column>\n  <p-column field=\"role\" header=\"Role\" [sortable]=\"true\"></p-column>\n  <p-column field=\"actions\" header=\"Actions\" [sortable]=\"true\"></p-column> \n</p-dataTable>\n\n\n\n\n\n<p-dialog header=\"Create User\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n    <span>\n        <div class=\"ui-g ui-fluid\">\n            <div class=\"ui-g-6\">\n                <label>First Name</label>\n                <div class=\"ui-inputgroup\">\n                    <input type=\"text\" pInputText placeholder=\"First Name\">         \n                </div>\n            </div>\n            <div class=\"ui-g-6\">\n                <label>Last Name</label>\n                <div class=\"ui-inputgroup\">                  \n                    <input type=\"text\" pInputText placeholder=\"Last Name\">         \n                </div>\n            </div>\n            <div class=\"ui-g-6\">\n                <label>Email</label>\n                <div class=\"ui-inputgroup\">                  \n                    <input type=\"text\" pInputText placeholder=\"Email\">         \n                </div>\n            </div>\n            <div class=\"ui-g-6\">\n                    <label>Select Role</label>\n                    <!-- <p-dropdown [options]=\"roles\" placeholder=\"Select a Role\"></p-dropdown> -->\n                    <p-dropdown [options]=\"roles\" [(ngModel)]=\"selectedCity\" placeholder=\"Select a City\" optionLabel=\"role\" [showClear]=\"true\"></p-dropdown>\n            </div>\n        </div>\n    </span>\n    <p-footer>\n    <button type=\"button\" pButton icon=\"fa-check\" (click)=\"display=false\" label=\"Yes\"></button>\n    <button type=\"button\" pButton icon=\"fa-close\" (click)=\"display=false\" label=\"No\"></button>\n    </p-footer>\n</p-dialog>"
+module.exports = "<div class=\"ui-g-nopad ql-ovv-site-cont\">\n    <img class=\"ql-site-building\" src=\"../assets/images/building.jpg\" alt=\"\">\n    <div class=\"ql-ovv-site-titles\">\n        <label>{{site.name}} Overview</label>\n        <p><i class=\"fa fa-map-marker\"></i> {{site.address_line1}}, {{site.address_line2}}, {{site.city}}, {{site.state}} - {{site.zipcode}}</p>\n    </div>\n    <i class=\"fa fa-pencil ql-ovv-edit\"></i>\n</div>\n\n\n\n<div style=\"width:100%; float:left; height:auto\">\n    <div class=\"ui-widget-header ql-search ql-ovv-users-search-cont\">\n\n        <label class=\"ql-ovv-user-title\">All Users</label>\n        <!-- <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i> -->\n\n        <!-- <p-dropdown [options]=\"cities1\" [group]=\"true\" class=\"float-left\" ></p-dropdown> -->\n        <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Search...\">\n        <p-fileUpload mode=\"basic\" name=\"file\" url=\"http://172.16.18.93:3000/upload_records?name=users\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n        <button type=\"button\" (click)=\"showDialog()\" pButton>  Add User</button>\n    </div>\n\n\n\n    <p-dataTable [value]=\"users\" reorderableColumns=\"true\" [rows]=\"10\" [paginator]=\"true\" [pageLinks]=\"5\" [rowsPerPageOptions]=\"[5,10,20]\" [globalFilter]=\"gb\" #dt>\n        <p-column field=\"user_name\" header=\"Users\" [sortable]=\"true\"></p-column>\n        <p-column field=\"email\" header=\"Email ID\" [sortable]=\"true\"></p-column>\n        <p-column field=\"role\" header=\"Role\" [sortable]=\"true\"></p-column>\n        <p-column styleClass=\"col-button\">\n            <ng-template pTemplate=\"header\">\n            </ng-template>\n            <ng-template let-car=\"rowData\" pTemplate=\"body\">\n                <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n            </ng-template>\n        </p-column>\n    </p-dataTable>\n\n</div>\n\n<p-dialog header=\"Create User\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"700\" [minWidth]=\"400\" [minY]=\"400\">\n    <form [formGroup]=\"userCreateForm\" (ngSubmit)=\"createUser(userCreateForm)\">\n        <div class=\"ui-g ui-fluid\">\n            <div class=\"ui-g-6\">\n                <label>First Name</label>\n                <div class=\"ui-inputgroup\">\n                    <input name=\"firstName\" id=\"firstName\" type=\"text\" pInputText placeholder=\"First Name\" formControlName=\"firstName\" required=\"required\" data-error=\"First name is required.\">\n                    <span *ngIf=\" !userCreateForm.get('firstName').valid && userCreateForm.get('firstName').touched && userCreateForm.hasError('required', 'firstName')\">\n                        First name is required\n                    </span>\n                </div>\n            </div>\n            <div class=\"ui-g-6\">\n                <label>Last Name</label>\n                <div class=\"ui-inputgroup\">\n                    <input name=\"lastName\" id=\"lastName\" type=\"text\" pInputText placeholder=\"Last Name\" formControlName=\"lastName\" required=\"required\" data-error=\"Last name is required.\">\n                    <span *ngIf=\" !userCreateForm.get('lastName').valid && userCreateForm.get('lastName').touched && userCreateForm.hasError('required', 'lastName')\">\n                        Last name is required\n                    </span>\n                </div>\n            </div>\n            <div class=\"ui-g-6\">\n                <label>Email</label>\n                <div class=\"ui-inputgroup\">\n                    <input name=\"email\" id=\"email\" type=\"text\" pInputText placeholder=\"Email\" formControlName=\"email\" required=\"required\" data-error=\"email is required.\">\n                    <span *ngIf=\" !userCreateForm.get('email').valid && userCreateForm.get('email').touched && userCreateForm.hasError('required', 'email')\">\n                        Email is required\n                    </span>\n                </div>\n            </div>\n            <div class=\"ui-g-6\">\n                <label>Select Role</label>\n                <!-- <p-dropdown [options]=\"roles\" id=\"role\" placeholder=\"Select a Role\"></p-dropdown> -->\n                <p-dropdown [options]=\"roles\" placeholder=\"Select a Role\" optionLabel=\"role\" [showClear]=\"true\" formControlName=\"role\"></p-dropdown>\n            </div>\n        </div>\n        <p-footer>\n            <button type=\"submit\" pButton label=\"Yes\">Submit</button>\n            <button type=\"cancel\" pButton (click)=\"display=false\" label=\"No\">Cancel</button>\n        </p-footer>\n    </form>\n</p-dialog>"
 
 /***/ }),
 
@@ -2823,6 +2875,8 @@ module.exports = "<div class=\"ui-g-nopad ql-ovv-site-cont\" >\n  <img class=\"q
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_user_service__ = __webpack_require__("./src/app/sites/services/user.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Rx__ = __webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2835,11 +2889,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 var OverviewComponent = (function () {
-    function OverviewComponent(userService, route) {
+    function OverviewComponent(userService, route, _fb) {
         this.userService = userService;
         this.route = route;
+        this._fb = _fb;
         this.display = false;
+        this.userCreateForm = this._fb.group({
+            id: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormControl"](),
+            firstName: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["Validators"].required),
+            lastName: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["Validators"].required),
+            email: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["Validators"].required),
+            role: new __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_3__angular_forms__["Validators"].required)
+        });
     }
     OverviewComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -2847,11 +2911,27 @@ var OverviewComponent = (function () {
             _this.site_id = +params['id'];
             _this.userService.getUsersAndRoles(_this.site_id)
                 .subscribe(function (data) {
-                console.log(data);
                 _this.users = data.users;
                 _this.roles = data.roles;
             });
         });
+        this.edit = [
+            { label: 'Edit', icon: 'far fa-pencil', command: function () {
+                } },
+            { label: 'Delete', icon: 'far fa-trash', command: function () {
+                } },
+        ];
+    };
+    OverviewComponent.prototype.createUser = function (userCreateForm) {
+        var _this = this;
+        if (userCreateForm.valid) {
+            this.userService.createUser(Object.assign(userCreateForm.value, { site_id: this.site_id })).subscribe(function (res) {
+                console.log(res);
+                _this.users = res.users;
+                _this.display = false;
+                _this.userCreateForm.reset();
+            });
+        }
     };
     OverviewComponent.prototype.showDialog = function () {
         this.display = true;
@@ -2867,7 +2947,7 @@ var OverviewComponent = (function () {
             template: __webpack_require__("./src/app/sites/overview/overview.component.html"),
             styles: [__webpack_require__("./src/app/sites/overview/overview.component.css")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["ActivatedRoute"]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__services_user_service__["a" /* UserService */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["ActivatedRoute"], __WEBPACK_IMPORTED_MODULE_3__angular_forms__["FormBuilder"]])
     ], OverviewComponent);
     return OverviewComponent;
 }());
@@ -2886,7 +2966,7 @@ module.exports = ""
 /***/ "./src/app/sites/sections/sections.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<p-dialog header=\"Godfather I\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n    <span>\n        <div class=\"ui-g ui-fluid\">\n            <div class=\"ui-g-6\">\n              <label>Section Name</label>\n                <div class=\"ui-inputgroup\">\n                   \n                    <input type=\"text\" pInputText placeholder=\"Username\">         \n                </div>\n            </div>\n            <div class=\"ui-g-6\">\n                <label>Section Name</label>\n                  <div class=\"ui-inputgroup\">\n                     \n                      <input type=\"text\" pInputText placeholder=\"Username\">         \n                  </div>\n              </div>\n<div class=\"ui-g-6\">\n    <p-dropdown [options]=\"cities\" placeholder=\"Select a City\"></p-dropdown>\n\n    <!-- <p>Selected City: {{selectedCity ? selectedCity.name : 'none'}}</p> -->\n</div>\n\n            </div>\n\n    </span>\n        <p-footer>\n            <button type=\"button\" pButton (click)=\"display=false\" label=\"Yes\">Yes</button>\n            <button type=\"button\" pButton (click)=\"display=false\" label=\"No\">No</button>\n        </p-footer>\n</p-dialog>\n\n\n\n\n\n<div class=\"ui-widget-header ql-search\" style=\"padding:4px 10px;border-bottom: 0 none\">\n    <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n    <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Global Filter\">\n\n   \n    <!-- <button pButton type=\"button\" label=\"Click\" ></button> -->\n    <div style=\"float:right;\">\n    <p-fileUpload mode=\"basic\" name=\"demo[]\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n    <button type=\"button\" (click)=\"showDialog()\" pButton   label=\"Add Section\">Add Section</button>\n  </div>\n</div>\n\n<p-dataTable [value]=\"items\" reorderableColumns=\"true\" scrollable=\"true\" [rows]=\"5\" [globalFilter]=\"gb\" #dt >\n    <p-column field=\"section\" header=\"Section Name\" [sortable]=\"true\"></p-column>\n    <p-column field=\"brand\" header=\"Description\" [sortable]=\"true\"></p-column>\n    <p-column field=\"color\" header=\"Label\" [sortable]=\"true\"></p-column>\n    <p-column field=\"color\" header=\"Utility Type\" [sortable]=\"true\"></p-column>\n    <p-column field=\"color\" header=\"Rate Structure\" [sortable]=\"true\"></p-column>\n    <p-column field=\"color\" header=\"Units Assigned\" [sortable]=\"true\"></p-column>\n    <p-column styleClass=\"col-button\">\n        <ng-template pTemplate=\"header\">\n            <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n        </ng-template>\n        <ng-template let-car=\"rowData\" pTemplate=\"body\">\n            <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n        </ng-template>\n    </p-column>\n</p-dataTable>\n\n"
+module.exports = "<p-dialog header=\"{{formType}} Section\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n    <form [formGroup]=\"sectionForm\" (ngSubmit)=\"createSection(sectionForm)\">\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Section Name *</h3>\n\t\t\t\t<input class=\"login-input\" name=\"sectionname\" id=\"sectionName\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter section name\"\n\t\t\t\t formControlName=\"section_name\" required=\"required\" data-error=\"section name is required.\">\n\t\t\t\t<span *ngIf=\" !sectionForm.get('section_name').valid && sectionForm.get('section_name').touched && sectionForm.hasError('required', 'section_name')\">\n\t\t\t\t\tsection name is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Section Type *</h3>\n\t\t\t\t<input class=\"login-input\" name=\"sectiontype\" id=\"sectiontype\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter section type\"\n\t\t\t\t formControlName=\"section_type\" required=\"required\" data-error=\"section type is required.\">\n\t\t\t\t<span *ngIf=\" !sectionForm.get('section_type').valid && sectionForm.get('section_type').touched && sectionForm.hasError('required', 'section_type')\">\n\t\t\t\t\tsection type is required</span>\n            </span>\n        </div>\n        <!-- <div>\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Section Type *</h3>\n\t\t\t\t<input class=\"login-input\" name=\"sectiontype\" id=\"sectiontype\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter section type\"\n\t\t\t\t formControlName=\"section_type\" required=\"required\" data-error=\"section type is required.\">\n\t\t\t\t<span *ngIf=\" !sectionForm.get('section_type').valid && sectionForm.get('section_type').touched && sectionForm.hasError('required', 'section_type')\">\n\t\t\t\t\tsection type is required</span>\n            </span>\n        </div> -->\n    </form>\n</p-dialog>\n\n<div class=\"ui-widget-header ql-search\" style=\"padding:4px 10px;border-bottom: 0 none\">\n    <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n    <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Global Filter\">\n\n\n    <!-- <button pButton type=\"button\" label=\"Click\" ></button> -->\n    <div style=\"float:right;\">\n        <p-fileUpload mode=\"basic\" name=\"demo[]\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\">Upload CSV</p-fileUpload>\n        <button type=\"button\" (click)=\"showDialog()\" pButton label=\"Add Section\">Add Section</button>\n    </div>\n</div>\n\n<p-dataTable [value]=\"sections\" scrollable=\"true\" [rows]=\"5\" [globalFilter]=\"gb\" #dt>\n    <p-column field=\"section_name\" header=\"Section Name\" [sortable]=\"true\"></p-column>\n    <p-column field=\"label\" header=\"Label\" [sortable]=\"true\"></p-column>\n    <p-column field=\"utility_type\" header=\"Utility Type\" [sortable]=\"true\"></p-column>\n    <p-column field=\"rate_structure\" header=\"Rate Structure\" [sortable]=\"true\"></p-column>\n    <p-column field=\"units_assigned\" header=\"Units Assigned\" [sortable]=\"true\"></p-column>\n    <p-column styleClass=\"col-button\">\n        <ng-template pTemplate=\"header\">\n            <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n        </ng-template>\n        <ng-template let-car=\"rowData\" pTemplate=\"body\">\n            <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n        </ng-template>\n    </p-column>\n</p-dataTable>"
 
 /***/ }),
 
@@ -2896,6 +2976,9 @@ module.exports = "\n<p-dialog header=\"Godfather I\" [(visible)]=\"display\" mod
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SectionsComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Rx__ = __webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__sites_services_sections_service__ = __webpack_require__("./src/app/sites/services/sections.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2906,36 +2989,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
 var SectionsComponent = (function () {
-    function SectionsComponent() {
+    function SectionsComponent(sectionService, _fb) {
+        this.sectionService = sectionService;
+        this._fb = _fb;
         this.display = false;
+        this.utilityTypes = [];
+        this.sectionForm = this._fb.group({
+            id: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](),
+            section_name: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"]("", __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
+            utility_id: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"]("", __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
+            section_type: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"]("", __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
+        });
     }
     SectionsComponent.prototype.ngOnInit = function () {
-        this.items = [
-            { "brand": "VW", "section": "Sewage Rate", "color": "Orange", },
-            { "brand": "Audi", "section": "Section C1", "color": "Black" },
-            { "brand": "Renault", "section": "Section RA", "color": "Gray" },
-            { "brand": "BMW", "section": "Water Rate", "color": "Blue" },
-            { "brand": "Mercedes", "section": "Gas Rate", "color": "Orange" },
-            { "brand": "Volvo", "section": 2005, "color": "Black" },
-            { "brand": "Honda", "section": 2012, "color": "Yellow" },
-            { "brand": "Jaguar", "section": 2013, "color": "Orange" },
-            { "brand": "Ford", "section": 2000, "color": "Black" },
-            { "brand": "Fiat", "section": 2013, "color": "Red" },
-            { "brand": "VW", "section": 2012, "color": "Orange" },
-        ];
-        this.cities = [{ label: 'Select City', value: null },
-            { label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } },
-            { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
-            { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
-            { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
-            { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }];
+        var _this = this;
+        this.sectionService.getSections()
+            .subscribe(function (data) {
+            _this.sections = data.sections;
+        });
+        this.sectionService.getUtilityTypes()
+            .subscribe(function (data) {
+            _this.utilityTypes = data.utility_types;
+            console.log(data);
+        });
     };
     SectionsComponent.prototype.showDialog = function () {
         this.display = true;
+        this.sectionForm.reset();
+        this.formType = "Create";
     };
-    SectionsComponent.prototype.handleClick = function () {
-        //execute action
+    // create or update the section
+    SectionsComponent.prototype.createSection = function (sectionForm) {
+    };
+    SectionsComponent.prototype.editSectionDialog = function (section) {
+        this.display = true;
+        this.sectionForm.setValue(section);
+        this.formType = "Update";
     };
     SectionsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -2943,9 +3036,88 @@ var SectionsComponent = (function () {
             template: __webpack_require__("./src/app/sites/sections/sections.component.html"),
             styles: [__webpack_require__("./src/app/sites/sections/sections.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__sites_services_sections_service__["a" /* SectionsService */], __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormBuilder"]])
     ], SectionsComponent);
     return SectionsComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/sites/services/meter-page.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MeterPageService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_environments_environment__ = __webpack_require__("./src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var MeterPageService = (function () {
+    function MeterPageService(httpClient) {
+        this.httpClient = httpClient;
+    }
+    MeterPageService.prototype.getMeters = function () {
+        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "meters");
+    };
+    MeterPageService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
+    ], MeterPageService);
+    return MeterPageService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/sites/services/sections.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SectionsService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_environments_environment__ = __webpack_require__("./src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var SectionsService = (function () {
+    function SectionsService(httpClient) {
+        this.httpClient = httpClient;
+    }
+    SectionsService.prototype.getSections = function () {
+        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "sections");
+    };
+    SectionsService.prototype.getUtilityTypes = function () {
+        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "utility_types");
+    };
+    SectionsService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
+    ], SectionsService);
+    return SectionsService;
 }());
 
 
@@ -2987,11 +3159,69 @@ var SitesServiceService = (function () {
     SitesServiceService.prototype.createSite = function (reqBody) {
         return this.httpClient.post(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "/sites", reqBody);
     };
+    SitesServiceService.prototype.updateSite = function (reqBody) {
+        return this.httpClient.put(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "sites/" + reqBody.id, reqBody);
+    };
+    SitesServiceService.prototype.deleteSite = function (siteId) {
+        return this.httpClient.delete(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "sites/" + siteId);
+    };
     SitesServiceService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
     ], SitesServiceService);
     return SitesServiceService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/sites/services/tenants.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TenantsService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_environments_environment__ = __webpack_require__("./src/environments/environment.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var TenantsService = (function () {
+    function TenantsService(httpClient) {
+        this.httpClient = httpClient;
+    }
+    // sahu
+    TenantsService.prototype.getTenants = function (site_id) {
+        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "tenants/" + site_id);
+    };
+    // To get the tenant details
+    TenantsService.prototype.getTenantDetails = function (id) {
+        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "get_site_details", { params: { id: id } });
+    };
+    TenantsService.prototype.createTenant = function (reqBody, site_id) {
+        return this.httpClient.post(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "create_tenant", { params: reqBody, site_id: site_id });
+    };
+    TenantsService.prototype.updateTenant = function (reqBody) {
+        return this.httpClient.put(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "users/" + reqBody.id, reqBody);
+    };
+    TenantsService.prototype.deleteTenant = function (tenantId) {
+        return this.httpClient.delete(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "users/" + tenantId);
+    };
+    TenantsService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
+    ], TenantsService);
+    return TenantsService;
 }());
 
 
@@ -3023,7 +3253,7 @@ var UnitsService = (function () {
         this.httpClient = httpClient;
     }
     UnitsService.prototype.getUnits = function () {
-        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "/units");
+        return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2_environments_environment__["a" /* environment */].host + "units");
     };
     UnitsService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -3065,6 +3295,12 @@ var UserService = (function () {
     UserService.prototype.getUsersAndRoles = function (site_id) {
         return this.httpClient.get(__WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].host + "get_users_and_roles", { params: { site_id: site_id } });
     };
+    UserService.prototype.createUser = function (reqBody) {
+        return this.httpClient.post(__WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].host + "create_user", reqBody);
+    };
+    UserService.prototype.logout = function () {
+        return this.httpClient.post(__WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].host + "logout", {});
+    };
     UserService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["b" /* HttpClient */]])
@@ -3086,7 +3322,7 @@ module.exports = ""
 /***/ "./src/app/sites/site/site.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <p-breadcrumb class=\"float-right categories\" [model]=\"items\" [home]=\"home\"></p-breadcrumb> -->\n<div class=\"clear\"></div>\n<h5 class=\"page-heading\">{{site.name}}</h5>\n<div class=\"ui-g-nopad tabs-view\">\n    <p-tabView>\n        <p-tabPanel header=\"Overview\" leftIcon=\"fa-book\">\n            <quadlogic-overview [site]=site></quadlogic-overview>\n        </p-tabPanel>\n        <p-tabPanel header=\"Sections\" leftIcon=\"fa-building\">\n            <quadlogic-sections></quadlogic-sections>\n        </p-tabPanel>\n        <p-tabPanel header=\"Units\" leftIcon=\"fa-home\">\n            <quadlogic-units></quadlogic-units>\n        </p-tabPanel>\n        <p-tabPanel header=\"Meters\" leftIcon=\"fa-dashboard\">\n            <quadlogic-meter-page></quadlogic-meter-page>\n        </p-tabPanel>\n        <p-tabPanel header=\"Tenants\" leftIcon=\"fa-users\">\n            Content 5\n        </p-tabPanel>\n    </p-tabView>\n</div>\n"
+module.exports = "<!-- <p-breadcrumb class=\"float-right categories\" [model]=\"items\" [home]=\"home\"></p-breadcrumb> -->\n<div class=\"clear\"></div>\n<h5 class=\"page-heading\">{{site.name}}</h5>\n<div class=\"ui-g-nopad tabs-view\">\n    <p-tabView>\n        <p-tabPanel header=\"Overview\" leftIcon=\"fa-book\">\n            <quadlogic-overview [site]=site></quadlogic-overview>\n        </p-tabPanel>\n        <p-tabPanel header=\"Sections\" leftIcon=\"fa-building\">\n            <quadlogic-sections></quadlogic-sections>\n        </p-tabPanel>\n        <p-tabPanel header=\"Units\" leftIcon=\"fa-home\">\n            <quadlogic-units></quadlogic-units>\n        </p-tabPanel>\n        <p-tabPanel header=\"Meters\" leftIcon=\"fa-dashboard\">\n            <quadlogic-meter-page></quadlogic-meter-page>\n        </p-tabPanel>\n        <p-tabPanel header=\"Tenants\" leftIcon=\"fa-users\">\n            <quadlogic-tenants [site]=site></quadlogic-tenants>\n        </p-tabPanel>\n    </p-tabView>\n</div>"
 
 /***/ }),
 
@@ -3159,7 +3395,7 @@ module.exports = ".ui-table .ui-table-tbody>tr>td, .ui-table .ui-table-thead>tr>
 /***/ "./src/app/sites/sites-list/sites-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"siteTable\">\n\t<p-table [value]=\"sites\">\n\t\t<ng-template pTemplate=\"caption\">\n\t\t\t<div class=\"ui-g\">\n\t\t\t\t<div class=\"ui-g-12 ui-md-6 ui-lg-5 search-input\">\n\t\t\t\t\t<!-- <input type=\"text\" pInputText size=\"50\" placeholder=\"Global Filter\">\n                <i class=\"fa fa-search search-icon\"></i> -->\n\t\t\t\t\t<h5 class=\"page-heading\">All sites</h5>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"ui-g-12 ui-md-6 ui-lg-7 padding-zero text-right site-buttons\">\n\t\t\t\t\t<button pButton type=\"button\" icon=\"fas fa-upload\" label=\"Import CSV\" class=\"ui-button-secondary\">Import CSV</button>\n\t\t\t\t\t<button pButton type=\"button\" icon=\"fal fa-plus\" label=\"Add Site\" (click)=\"showDialog()\" class=\"ui-button-secondary\">Add Site</button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</ng-template>\n\t\t<ng-template pTemplate=\"header\">\n\t\t\t<tr>\n\t\t\t\t<th width=\"30%\">Site</th>\n\t\t\t\t<th width=\"14%\">City</th>\n\t\t\t\t<th width=\"14%\">State</th>\n\t\t\t\t<th width=\"14%\">Units</th>\n\t\t\t\t<th width=\"14%\">Managers</th>\n\t\t\t\t<th width=\"14%\">Tanants</th>\n\t\t\t</tr>\n\t\t</ng-template>\n\t\t<ng-template pTemplate=\"body\" let-site>\n\t\t\t<tr>\n\t\t\t\t<td width=\"30%\">\n\t\t\t\t\t<b>\n\t\t\t\t\t\t<a href=\"\" [routerLink]=\"['/sites/', site.id]\">{{site.name}}</a>\n\t\t\t\t\t</b>{{site.address_line1}}{{site.address_line2}}</td>\n\t\t\t\t<td width=\"14%\">{{site.city}}</td>\n\t\t\t\t<td width=\"14%\">{{site.state}}</td>\n\t\t\t\t<td width=\"14%\">{{site.units}}</td>\n\t\t\t\t<td width=\"14%\">{{site.managers}}</td>\n\t\t\t\t<td width=\"14%\" class=\"split-button\">{{site.tanants}}\n\t\t\t\t\t<p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"items\"></p-splitButton>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</ng-template>\n\t</p-table>\n</div>\n\n\n<p-dialog class=\"modal-top\" header=\"Create Site\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"700\" [minWidth]=\"700\"\n [minY]=\"700\">\n\t<form [formGroup]=\"siteCreateForm\" (ngSubmit)=\"createSite(siteCreateForm)\">\n\t\t<div class=\"ui-g\">\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Site Name *</h3>\n\t\t\t\t<input class=\"login-input\" name=\"sitename\" id=\"siteName\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site name\" formControlName=\"name\"\n\t\t\t\t required=\"required\" data-error=\"sitename is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('name').valid && siteCreateForm.get('name').touched && siteCreateForm.hasError('required', 'name')\">\n\t\t\t\tsite name is required</span>\n\t\t\t</span>\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Address 1 *</h3>\n\t\t\t\t<input class=\"login-input\" name=\"siteaddress\" id=\"address1\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site address\"\n\t\t\t\t formControlName=\"address_line1\" required=\"required\" data-error=\"site address is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('address_line1').valid && siteCreateForm.get('address_line1').touched && siteCreateForm.hasError('required', 'address_line1')\">\n\t\t\t\tsite address is required</span>\n\t\t\t</span>\n\t\t</div>\n\t\t<div class=\"ui-g\">\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Address 2 *</h3>\n\t\t\t\t<input id=\"siteaddress1\" class=\"login-input\" name=\"siteaddress2\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site another address\"\n\t\t\t\t formControlName=\"address_line2\" required=\"required\" data-error=\"site another address is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('address_line2').valid && siteCreateForm.get('address_line2').touched && siteCreateForm.hasError('required', 'address2')\">\n\t\t\t\tsite address is required</span>\n\t\t\t</span>\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">City</h3>\n\t\t\t\t<input id=\"city\" class=\"login-input\" name=\"city\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your City\" formControlName=\"city\"\n\t\t\t\t required=\"required\" data-error=\"site city is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('city').valid && siteCreateForm.get('city').touched && siteCreateForm.hasError('required', 'city')\">\n\t\t\t\tsite city is required</span>\n\t\t\t</span>\n\t\t</div>\n\t\t<div class=\"ui-g\">\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">State *</h3>\n\t\t\t\t<input id=\"state\" class=\"login-input\" name=\"state\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site state\" formControlName=\"state\"\n\t\t\t\t required=\"required\" data-error=\"state is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('state').valid && siteCreateForm.get('state').touched && siteCreateForm.hasError('required', 'state')\">\n\t\t\t\tsite state is required</span>\n\t\t\t</span>\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Country *</h3>\n\t\t\t\t<input id=\"country\" class=\"login-input\" name=\"country\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your Country\"\n\t\t\t\t formControlName=\"country\" required=\"required\" data-error=\"site country is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('country').valid && siteCreateForm.get('country').touched && siteCreateForm.hasError('required', 'country')\">\n\t\t\t\tsite country is required</span>\n\t\t\t</span>\n\t\t</div>\n\t\t<div class=\"ui-g\">\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Zipcode *</h3>\n\t\t\t\t<input id=\"zipcode\" class=\"login-input\" name=\"zipcode\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site zipcode\" formControlName=\"zipcode\"\n\t\t\t\t required=\"required\" data-error=\"state zipcode is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('zipcode').valid && siteCreateForm.get('zipcode').touched && siteCreateForm.hasError('required', 'zipcode')\">\n\t\t\t\tsite zipcode is required</span>\n\t\t\t</span>\n\t\t\t<span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">ShortZipocde *</h3>\n\t\t\t\t<input id=\"shortzipcode\" class=\"login-input\" name=\"country\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your shortzipcode\"\n\t\t\t\t formControlName=\"short_zip_code\" required=\"required\" data-error=\"site shortzipcode is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('short_zip_code').valid && siteCreateForm.get('short_zip_code').touched && siteCreateForm.hasError('required', 'short_zip_code')\">\n\t\t\t\tsite shortzipcode is required</span>\n\t\t\t</span>\n\t\t</div>\n\t\t<p-footer class=\"\">\n\t\t\t<button type=\"button\" pButton class=\"ui-button-secondary\" (click)=\"display=false\" label=\"close\">close</button>\n\t\t\t<button type=\"submit\" pButton class=\"ui-button btn-orange\" label=\"Save changes\">Save changes</button>\n\t\t</p-footer>\n\t</form>\n</p-dialog>\n"
+module.exports = "<div class=\"siteTable\">\n    <p-table [value]=\"sites\">\n        <ng-template pTemplate=\"caption\">\n            <div class=\"ui-g\">\n                <div class=\"ui-g-12 ui-md-6 ui-lg-5 search-input\">\n                    <h5 class=\"page-heading\">All sites</h5>\n                </div>\n                <div class=\"ui-g-12 ui-md-6 ui-lg-7 padding-zero text-right site-buttons\">\n                    <!-- <button pButton type=\"button\" icon=\"fas fa-upload\" label=\"Import CSV\" class=\"ui-button-secondary\">Import CSV</button> -->\n                    <p-fileUpload mode=\"basic\" name=\"file\" url=\"http://18.222.105.182/upload_records?name=sites\" (onUpload)=\"onBasicUpload($event)\"> Import CSV </p-fileUpload>\n                    <button pButton type=\"button\" icon=\"fal fa-plus\" label=\"Add Site\" (click)=\"showDialog()\" class=\"ui-button-secondary\">Add Site</button>\n                </div>\n            </div>\n        </ng-template>\n        <ng-template pTemplate=\"header\">\n            <tr>\n                <th width=\"28%\">Site</th>\n                <th width=\"12%\">City</th>\n                <th width=\"12%\">State</th>\n                <th width=\"12%\">Units</th>\n                <th width=\"12%\">Managers</th>\n                <th width=\"12%\">Tanants</th>\n                <th width=\"12%\">Actions</th>\n            </tr>\n        </ng-template>\n        <ng-template pTemplate=\"body\" let-site>\n            <tr>\n                <td width=\"28%\">\n                    <b>\n\t\t\t\t\t\t<a href=\"\" [routerLink]=\"['/sites/', site.id]\">{{site.name}}</a>\n\t\t\t\t\t</b>{{site.address_line1}}{{site.address_line2}}</td>\n                <td width=\"12%\">{{site.city}}</td>\n                <td width=\"12%\">{{site.state}}</td>\n                <td width=\"12%\">{{site.units}}</td>\n                <td width=\"12%\">{{site.managers}}</td>\n                <td width=\"12%\">{{site.tanants}}</td>\n                <td width=\"12%\">\n                    <button pButton type=\"button\" label=\"Edit Site\" (click)=\"editSiteDialog(site)\" class=\"ui-button-secondary\"> Edit Site</button>\n                    <button pButton type=\"button\" label=\"Delte Site\" (click)=\"deleteDialog(site.id)\" class=\"ui-button-secondary\"> Delete Site</button>\n                </td>\n            </tr>\n        </ng-template>\n    </p-table>\n</div>\n\n<p-dialog class=\"modal-top\" header=\"{{formType}} Site\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"700\" [minWidth]=\"700\" [minY]=\"700\">\n    <form [formGroup]=\"siteCreateForm\" (ngSubmit)=\"createSite(siteCreateForm)\">\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Site Name *</h3>\n\t\t\t\t<input class=\"login-input\" name=\"sitename\" id=\"siteName\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site name\" formControlName=\"name\"\n\t\t\t\t required=\"required\" data-error=\"sitename is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('name').valid && siteCreateForm.get('name').touched && siteCreateForm.hasError('required', 'name')\">\n\t\t\t\t\tsite name is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Address 1 *</h3>\n\t\t\t\t<input class=\"login-input\" name=\"siteaddress\" id=\"address1\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site address\"\n\t\t\t\t formControlName=\"address_line1\" required=\"required\" data-error=\"site address is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('address_line1').valid && siteCreateForm.get('address_line1').touched && siteCreateForm.hasError('required', 'address_line1')\">\n\t\t\t\t\tsite address is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Address 2 *</h3>\n\t\t\t\t<input id=\"siteaddress1\" class=\"login-input\" name=\"siteaddress2\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site another address\"\n\t\t\t\t formControlName=\"address_line2\" required=\"required\" data-error=\"site another address is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('address_line2').valid && siteCreateForm.get('address_line2').touched && siteCreateForm.hasError('required', 'address2')\">\n\t\t\t\t\tsite address is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">City</h3>\n\t\t\t\t<input id=\"city\" class=\"login-input\" name=\"city\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your City\" formControlName=\"city\"\n\t\t\t\t required=\"required\" data-error=\"site city is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('city').valid && siteCreateForm.get('city').touched && siteCreateForm.hasError('required', 'city')\">\n\t\t\t\t\tsite city is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">State *</h3>\n\t\t\t\t<input id=\"state\" class=\"login-input\" name=\"state\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site state\" formControlName=\"state\"\n\t\t\t\t required=\"required\" data-error=\"state is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('state').valid && siteCreateForm.get('state').touched && siteCreateForm.hasError('required', 'state')\">\n\t\t\t\t\tsite state is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Country *</h3>\n\t\t\t\t<input id=\"country\" class=\"login-input\" name=\"country\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your Country\"\n\t\t\t\t formControlName=\"country\" required=\"required\" data-error=\"site country is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('country').valid && siteCreateForm.get('country').touched && siteCreateForm.hasError('required', 'country')\">\n\t\t\t\t\tsite country is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">Zipcode *</h3>\n\t\t\t\t<input id=\"zipcode\" class=\"login-input\" name=\"zipcode\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter site zipcode\"\n\t\t\t\t formControlName=\"zipcode\" required=\"required\" data-error=\"state zipcode is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('zipcode').valid && siteCreateForm.get('zipcode').touched && siteCreateForm.hasError('required', 'zipcode')\">\n\t\t\t\t\tsite zipcode is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n\t\t\t\t<h3 class=\"login-label\">ShortZipocde *</h3>\n\t\t\t\t<input id=\"shortzipcode\" class=\"login-input\" name=\"country\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your shortzipcode\"\n\t\t\t\t formControlName=\"short_zipcode\" required=\"required\" data-error=\"site shortzipcode is required.\">\n\t\t\t\t<span *ngIf=\" !siteCreateForm.get('short_zipcode').valid && siteCreateForm.get('short_zipcode').touched && siteCreateForm.hasError('required', 'short_zipcode')\">\n\t\t\t\t\tsite shortzipcode is required</span>\n            </span>\n        </div>\n        <p-footer class=\"\">\n            <button type=\"button\" pButton class=\"ui-button-secondary\" (click)=\"display=false\" label=\"close\">close</button>\n            <button type=\"submit\" pButton class=\"ui-button btn-orange\" label=\"Save changes\" *ngIf=\"siteId == 0\">Create</button>\n            <button type=\"submit\" pButton class=\"ui-button btn-orange\" label=\"Save changes\" *ngIf=\"siteId != 0\">Update</button>\n        </p-footer>\n    </form>\n</p-dialog>\n\n<p-confirmDialog></p-confirmDialog>\n<!-- <p-fileUpload mode=\"basic\" name=\"file\" url=\"http://172.16.18.93:3000/upload_records?name=sites\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload> -->"
 
 /***/ }),
 
@@ -3172,6 +3408,8 @@ module.exports = "<div class=\"siteTable\">\n\t<p-table [value]=\"sites\">\n\t\t
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sites_services_sites_service_service__ = __webpack_require__("./src/app/sites/services/sites-service.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_primeng_api__ = __webpack_require__("./node_modules/primeng/api.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_primeng_api___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_primeng_api__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3186,20 +3424,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // sites service
 
 
+
 var SitesListComponent = (function () {
-    function SitesListComponent(siteService, _fb) {
+    function SitesListComponent(siteService, _fb, confirmationService) {
         this.siteService = siteService;
         this._fb = _fb;
+        this.confirmationService = confirmationService;
+        this.edit = [];
+        this.siteId = 0;
         this.display = false;
+        this.formType = "Create";
         this.siteCreateForm = this._fb.group({
-            name: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](),
+            id: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](),
+            name: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
             address_line1: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
             address_line2: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
             city: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
             state: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
             country: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
             zipcode: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
-            short_zip_code: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required)
+            short_zipcode: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required)
         });
     }
     SitesListComponent.prototype.ngOnInit = function () {
@@ -3209,16 +3453,37 @@ var SitesListComponent = (function () {
             console.log(data);
             _this.sites = data.sites;
         });
+        this.edit = [
+            { label: 'Edit', icon: 'far fa-pencil', command: function (site) {
+                    _this.editSiteDialog(site);
+                } },
+            { label: 'Delete', icon: 'far fa-trash', command: function (event) {
+                    _this.deleteDialog(event);
+                } },
+        ];
     };
     SitesListComponent.prototype.createSite = function (siteCreateForm) {
         var _this = this;
         if (siteCreateForm.valid) {
-            this.siteService.createSite(siteCreateForm.value).subscribe(function (res) {
-                console.log(res);
-                _this.sites.unshift(res.site);
-                _this.display = false;
-                _this.siteCreateForm.reset();
-            });
+            if (this.siteId == 0) {
+                this.siteService.createSite(siteCreateForm.value).subscribe(function (res) {
+                    console.log(res);
+                    _this.sites.unshift(res.site);
+                    _this.display = false;
+                    _this.siteCreateForm.reset();
+                });
+            }
+            else {
+                this.siteService.updateSite(siteCreateForm.value).subscribe(function (res) {
+                    _this.display = false;
+                    _this.siteCreateForm.reset();
+                    for (var i = 0; i < _this.sites.length; i++) {
+                        if (_this.sites[i].id == res.site.id) {
+                            _this.sites[i] = res.site;
+                        }
+                    }
+                });
+            }
         }
         else {
             this.setFormTouched(this.siteCreateForm);
@@ -3233,7 +3498,37 @@ var SitesListComponent = (function () {
         });
     };
     SitesListComponent.prototype.showDialog = function () {
+        this.siteCreateForm.reset();
         this.display = true;
+        this.siteId = 0;
+        this.formType = "Create";
+    };
+    SitesListComponent.prototype.editSiteDialog = function (site) {
+        this.siteId = site.id;
+        this.siteCreateForm.setValue(site);
+        this.display = true;
+        this.formType = "Edit";
+    };
+    SitesListComponent.prototype.deleteDialog = function (siteId) {
+        var _this = this;
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to proceed?',
+            header: 'Delete this site',
+            icon: 'fa fa-question-circle',
+            accept: function () {
+                _this.siteService.deleteSite(siteId).subscribe(function (res) {
+                    for (var i = 0; i < _this.sites.length; i++) {
+                        if (_this.sites[i].id == siteId) {
+                            _this.sites.splice(i, 1);
+                            break;
+                        }
+                    }
+                });
+            },
+            reject: function () {
+                _this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
+            }
+        });
     };
     SitesListComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3244,7 +3539,7 @@ var SitesListComponent = (function () {
         // interface for demo
         ,
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__sites_services_sites_service_service__["a" /* SitesServiceService */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormBuilder"]])
+            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormBuilder"], __WEBPACK_IMPORTED_MODULE_4_primeng_api__["ConfirmationService"]])
     ], SitesListComponent);
     return SitesListComponent;
 }());
@@ -3326,23 +3621,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_primeng_table___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_primeng_table__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_primeng_splitbutton__ = __webpack_require__("./node_modules/primeng/splitbutton.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_primeng_splitbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_primeng_splitbutton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__sites_list_sites_list_component__ = __webpack_require__("./src/app/sites/sites-list/sites-list.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_sites_service_service__ = __webpack_require__("./src/app/sites/services/sites-service.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_units_service__ = __webpack_require__("./src/app/sites/services/units.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__site_site_component__ = __webpack_require__("./src/app/sites/site/site.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__sections_sections_component__ = __webpack_require__("./src/app/sites/sections/sections.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__overview_overview_component__ = __webpack_require__("./src/app/sites/overview/overview.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__meter_page_meter_page_component__ = __webpack_require__("./src/app/sites/meter-page/meter-page.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__units_units_component__ = __webpack_require__("./src/app/sites/units/units.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__tenants_tenants_component__ = __webpack_require__("./src/app/sites/tenants/tenants.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__services_user_service__ = __webpack_require__("./src/app/sites/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_primeng_calendar__ = __webpack_require__("./node_modules/primeng/calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_primeng_calendar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_primeng_calendar__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__sites_list_sites_list_component__ = __webpack_require__("./src/app/sites/sites-list/sites-list.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_sites_service_service__ = __webpack_require__("./src/app/sites/services/sites-service.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__services_units_service__ = __webpack_require__("./src/app/sites/services/units.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_sections_service__ = __webpack_require__("./src/app/sites/services/sections.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_tenants_service__ = __webpack_require__("./src/app/sites/services/tenants.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_meter_page_service__ = __webpack_require__("./src/app/sites/services/meter-page.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__site_site_component__ = __webpack_require__("./src/app/sites/site/site.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__sections_sections_component__ = __webpack_require__("./src/app/sites/sections/sections.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__overview_overview_component__ = __webpack_require__("./src/app/sites/overview/overview.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__meter_page_meter_page_component__ = __webpack_require__("./src/app/sites/meter-page/meter-page.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__units_units_component__ = __webpack_require__("./src/app/sites/units/units.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__tenants_tenants_component__ = __webpack_require__("./src/app/sites/tenants/tenants.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__services_user_service__ = __webpack_require__("./src/app/sites/services/user.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_primeng_button__ = __webpack_require__("./node_modules/primeng/button.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26_primeng_button___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26_primeng_button__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_primeng_confirmdialog__ = __webpack_require__("./node_modules/primeng/confirmdialog.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27_primeng_confirmdialog___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_27_primeng_confirmdialog__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_primeng_api__ = __webpack_require__("./node_modules/primeng/api.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28_primeng_api___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_28_primeng_api__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
+
+
+
 
 
 
@@ -3382,11 +3695,14 @@ var SitesModule = (function () {
                 __WEBPACK_IMPORTED_MODULE_8_primeng_breadcrumb__["BreadcrumbModule"],
                 __WEBPACK_IMPORTED_MODULE_9_primeng_table__["TableModule"],
                 __WEBPACK_IMPORTED_MODULE_10_primeng_splitbutton__["SplitButtonModule"],
-                __WEBPACK_IMPORTED_MODULE_20__angular_forms__["FormsModule"],
-                __WEBPACK_IMPORTED_MODULE_20__angular_forms__["ReactiveFormsModule"]
+                __WEBPACK_IMPORTED_MODULE_24__angular_forms__["FormsModule"],
+                __WEBPACK_IMPORTED_MODULE_24__angular_forms__["ReactiveFormsModule"],
+                __WEBPACK_IMPORTED_MODULE_11_primeng_calendar__["CalendarModule"],
+                __WEBPACK_IMPORTED_MODULE_26_primeng_button__["ButtonModule"],
+                __WEBPACK_IMPORTED_MODULE_27_primeng_confirmdialog__["ConfirmDialogModule"]
             ],
-            declarations: [__WEBPACK_IMPORTED_MODULE_11__sites_list_sites_list_component__["a" /* SitesListComponent */], __WEBPACK_IMPORTED_MODULE_14__site_site_component__["a" /* SiteComponent */], __WEBPACK_IMPORTED_MODULE_15__sections_sections_component__["a" /* SectionsComponent */], __WEBPACK_IMPORTED_MODULE_16__overview_overview_component__["a" /* OverviewComponent */], __WEBPACK_IMPORTED_MODULE_17__meter_page_meter_page_component__["a" /* MeterPageComponent */], __WEBPACK_IMPORTED_MODULE_18__units_units_component__["a" /* UnitsComponent */], __WEBPACK_IMPORTED_MODULE_19__tenants_tenants_component__["a" /* TenantsComponent */]],
-            providers: [__WEBPACK_IMPORTED_MODULE_12__services_sites_service_service__["a" /* SitesServiceService */], __WEBPACK_IMPORTED_MODULE_13__services_units_service__["a" /* UnitsService */], __WEBPACK_IMPORTED_MODULE_21__services_user_service__["a" /* UserService */]]
+            declarations: [__WEBPACK_IMPORTED_MODULE_12__sites_list_sites_list_component__["a" /* SitesListComponent */], __WEBPACK_IMPORTED_MODULE_18__site_site_component__["a" /* SiteComponent */], __WEBPACK_IMPORTED_MODULE_19__sections_sections_component__["a" /* SectionsComponent */], __WEBPACK_IMPORTED_MODULE_20__overview_overview_component__["a" /* OverviewComponent */], __WEBPACK_IMPORTED_MODULE_21__meter_page_meter_page_component__["a" /* MeterPageComponent */], __WEBPACK_IMPORTED_MODULE_22__units_units_component__["a" /* UnitsComponent */], __WEBPACK_IMPORTED_MODULE_23__tenants_tenants_component__["a" /* TenantsComponent */]],
+            providers: [__WEBPACK_IMPORTED_MODULE_13__services_sites_service_service__["a" /* SitesServiceService */], __WEBPACK_IMPORTED_MODULE_14__services_units_service__["a" /* UnitsService */], __WEBPACK_IMPORTED_MODULE_17__services_meter_page_service__["a" /* MeterPageService */], __WEBPACK_IMPORTED_MODULE_15__services_sections_service__["a" /* SectionsService */], __WEBPACK_IMPORTED_MODULE_16__services_tenants_service__["a" /* TenantsService */], __WEBPACK_IMPORTED_MODULE_28_primeng_api__["ConfirmationService"], __WEBPACK_IMPORTED_MODULE_25__services_user_service__["a" /* UserService */]]
         })
     ], SitesModule);
     return SitesModule;
@@ -3406,7 +3722,7 @@ module.exports = ""
 /***/ "./src/app/sites/tenants/tenants.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "\n<div style=\"width:100%; float:left; height:auto\">\n  <div class=\"ui-widget-header ql-search ql-ovv-users-search-cont\">\n    \n   \n    <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n  \n    <!-- <p-dropdown [options]=\"cities1\" [group]=\"true\" class=\"float-left\" ></p-dropdown> -->\n    <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Search...\">\n    <p-fileUpload mode=\"basic\" name=\"demo[]\"   maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n    <button type=\"button\" (click)=\"showDialog()\" pButton style=\"float:right;\">  Add User</button>\n    </div>\n    \n  \n  \n  <p-dataTable [value]=\"items\" scrollable=\"true\" [rows]=\"5\" [globalFilter]=\"gb\" #dt >\n    <p-column field=\"username\" header=\"Tanants Name\" [sortable]=\"true\"></p-column>\n    <p-column field=\"emailaddress\" header=\"Email ID\" [sortable]=\"true\"></p-column>\n    <p-column field=\"units\" header=\"Units\" [sortable]=\"true\"></p-column>\n    <p-column field=\"type\" header=\"Type\" [sortable]=\"true\"></p-column> \n    <p-column styleClass=\"col-button\">\n      <ng-template pTemplate=\"header\">\n          <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n      </ng-template>\n      <ng-template let-car=\"rowData\" pTemplate=\"body\">\n          <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n      </ng-template>\n  </p-column>\n  </p-dataTable>\n  \n  </div>\n  \n  \n\n\n\n<p-dialog header=\"Godfather I\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n  <span>\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-6\">\n            <label>Section Name</label>\n              <div class=\"ui-inputgroup\">\n                 \n                  <input type=\"text\" pInputText placeholder=\"Username\">         \n              </div>\n          </div>\n          <div class=\"ui-g-6\">\n              <label>Section Name</label>\n                <div class=\"ui-inputgroup\">\n                   \n                    <input type=\"text\" pInputText placeholder=\"Username\">         \n                </div>\n            </div>\n<div class=\"ui-g-6\">\n  <p-dropdown [options]=\"cities\" placeholder=\"Select a City\"></p-dropdown>\n\n  <!-- <p>Selected City: {{selectedCity ? selectedCity.name : 'none'}}</p> -->\n</div>\n\n          </div>\n\n  </span>\n      <p-footer>\n          <button type=\"button\" pButton icon=\"fa-check\" (click)=\"display=false\" label=\"Yes\"></button>\n          <button type=\"button\" pButton icon=\"fa-close\" (click)=\"display=false\" label=\"No\"></button>\n      </p-footer>\n</p-dialog>"
+module.exports = "<div style=\"width:100%; float:left; height:auto\">\n    <div class=\"ui-widget-header ql-search ql-ovv-users-search-cont\">\n        <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n        <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Search...\">\n        <p-fileUpload mode=\"basic\" name=\"file\" url=\"http://18.222.105.182/upload_records?name=tenants\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n        <button type=\"button\" (click)=\"showDialog()\" pButton style=\"float:right;\">  Add User</button>\n    </div>\n\n    <p-dataTable [value]=\"tenants\" scrollable=\"true\" [rows]=\"5\" [globalFilter]=\"gb\" #dt>\n        <p-column field=\"name\" header=\"Tenants Name\" [sortable]=\"true\"></p-column>\n        <p-column field=\"email\" header=\"Email ID\" [sortable]=\"true\"></p-column>\n        <p-column field=\"units\" header=\"Units\" [sortable]=\"true\"></p-column>\n        <p-column field=\"types\" header=\"Type\" [sortable]=\"true\"></p-column>\n        <p-column field=\"move_in_dates\" header=\"Move in date\" [sortable]=\"true\"></p-column>\n        <p-column field=\"billing_dates\" header=\"Billing date\" [sortable]=\"true\"></p-column>\n        <p-column styleClass=\"col-button\">\n            <ng-template pTemplate=\"header\">\n                <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n            </ng-template>\n            <ng-template let-car=\"rowData\" pTemplate=\"body\">\n                <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n            </ng-template>\n        </p-column>\n    </p-dataTable>\n\n</div>\n\n<p-dialog class=\"modal-top\" header=\"Create Tenant\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"700\" [minWidth]=\"700\" [minY]=\"700\">\n    <form [formGroup]=\"tenantCreateForm\" (ngSubmit)=\"createTenant(tenantCreateForm)\">\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">First Name *</h3>\n                <input class=\"login-input\" name=\"first_name\" id=\"first_name\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter first name\" formControlName=\"first_name\"\n                required=\"required\" data-error=\"first name is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('first_name').valid && tenantCreateForm.get('first_name').touched && tenantCreateForm.hasError('required', 'first_name')\">\n                    First name is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Last Name *</h3>\n                <input class=\"login-input\" name=\"last_name\" id=\"last_name\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter last name\" formControlName=\"last_name\"\n                 required=\"required\" data-error=\"last name is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('last_name').valid && tenantCreateForm.get('last_name').touched && tenantCreateForm.hasError('required', 'last_name')\">\n                    Last name is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Email *</h3>\n                <input id=\"email\" class=\"login-input\" name=\"email\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your Email\" formControlName=\"email\"\n                required=\"required\" data-error=\"tenant email is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('email').valid && tenantCreateForm.get('email').touched && tenantCreateForm.hasError('required', 'email')\">\n                    Tenant email is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Status *</h3>\n                <div class=\"login-input\">\n                    <p-dropdown [options]=\"truthy\" formControlName=\"status\" placeholder=\"Status\" optionLabel=\"label\" [showClear]=\"true\"></p-dropdown>\n                    <span *ngIf=\" !tenantCreateForm.get('status').valid && tenantCreateForm.get('status').touched && tenantCreateForm.hasError('required', 'status')\">\n                        Tenant status is required</span>\n        </div>\n        </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Select a unit *</h3>\n                <div class=\"login-input\">\n                    <p-dropdown [options]=\"units\" formControlName=\"unit_id\" placeholder=\"Select a unit\" optionLabel=\"apartment_number\" [showClear]=\"true\"></p-dropdown>\n                    <span *ngIf=\" !tenantCreateForm.get('unit_id').valid && tenantCreateForm.get('unit_id').touched && tenantCreateForm.hasError('required', 'unit_id')\">\n                        Tenant unit is required\n                    </span>\n        </div>\n        </span>\n        <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Tenant type *</h3>\n                <input class=\"login-input\" name=\"tenant_type\" id=\"tenant_type\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter tenant type\" formControlName=\"tenant_type\"\n                required=\"required\" data-error=\"tenant type is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('tenant_type').valid && tenantCreateForm.get('tenant_type').touched && tenantCreateForm.hasError('required', 'tenant_type')\">\n                    Tenant type is required</span>\n        </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Move in date *</h3>\n                <p-calendar class=\"login-input\" formControlName=\"move_in_date\"></p-calendar>\n                <span *ngIf=\" !tenantCreateForm.get('move_in_date').valid && tenantCreateForm.get('move_in_date').touched && tenantCreateForm.hasError('required', 'move_in_date')\">\n                    Move in date is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Move out date *</h3>\n                <p-calendar class=\"login-input\" formControlName=\"move_out_date\"></p-calendar>\n                <span *ngIf=\" !tenantCreateForm.get('move_out_date').valid && tenantCreateForm.get('move_out_date').touched && tenantCreateForm.hasError('required', 'move_out_date')\">\n                    Move out date is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Adult occupants count *</h3>\n                <input id=\"adult_occupants_count\" class=\"login-input\" name=\"adult_occupants_count\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your Adult occupants count\" formControlName=\"adult_occupants_count\"\n                required=\"required\" data-error=\"tenant adult occupants count is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('adult_occupants_count').valid && tenantCreateForm.get('adult_occupants_count').touched && tenantCreateForm.hasError('required', 'adult_occupants_count')\">\n                    tenant adult occupants count is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Minor occupants count *</h3>\n                <input id=\"minor_occupants_count\" class=\"login-input\" name=\"minor_occupants_count\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your Minor occupants count\" formControlName=\"minor_occupants_count\"\n                required=\"required\" data-error=\"tenant minor occupants count is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('minor_occupants_count').valid && tenantCreateForm.get('minor_occupants_count').touched && tenantCreateForm.hasError('required', 'minor_occupants_count')\">\n                    tenant minor occupants count is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">fix occupants count *</h3>\n                <input id=\"fix_occupants_count\" class=\"login-input\" name=\"fix_occupants_count\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your fix occupants count\" formControlName=\"fix_occupants_count\"\n                required=\"required\" data-error=\"tenant fix occupants count is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('fix_occupants_count').valid && tenantCreateForm.get('fix_occupants_count').touched && tenantCreateForm.hasError('required', 'fix_occupants_count')\">\n                    tenant fix occupants count is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Is late fee applicable? *</h3>\n                <div class=\"login-input\">\n                    <p-dropdown [options]=\"truthy\" formControlName=\"is_late_fee_applicable\" placeholder=\"Is late fee applicable?\" optionLabel=\"label\" [showClear]=\"true\"></p-dropdown>\n                    <span *ngIf=\" !tenantCreateForm.get('is_late_fee_applicable').valid && tenantCreateForm.get('is_late_fee_applicable').touched && tenantCreateForm.hasError('required', 'is_late_fee_applicable')\">\n                        tenant is late fee applicable is required</span>\n        </div>\n        </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">floor plan id  *</h3>\n                <input id=\"floor_plan_id\" class=\"login-input\" name=\"floor_plan_id\" type=\"text\" size=\"30\" pInputText placeholder=\"Enter your floor plan id \" formControlName=\"floor_plan_id\"\n                required=\"required\" data-error=\"tenant floor plan id is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('floor_plan_id').valid && tenantCreateForm.get('floor_plan_id').touched && tenantCreateForm.hasError('required', 'floor_plan_id')\">\n                    tenant floor plan id is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Property management floor plan id *</h3>\n                <input id=\"property_management_floor_plan_id\" class=\"login-input\" name=\"property_management_floor_plan_id\" type=\"text\" size=\"30\" pInputText placeholder=\"Property management floor plan id\" formControlName=\"property_management_floor_plan_id\"\n                required=\"required\" data-error=\"tenant Property management floor plan id  is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('property_management_floor_plan_id').valid && tenantCreateForm.get('property_management_floor_plan_id').touched && tenantCreateForm.hasError('required', 'property_management_floor_plan_id')\">\n                    tenant Property management floor plan id is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Property management property id *</h3>\n                <input id=\"property_management_property_id\" class=\"login-input\" name=\"property_management_property_id\" type=\"text\" size=\"30\" pInputText placeholder=\"Property management property id\" formControlName=\"property_management_property_id\"\n                required=\"required\" data-error=\"tenant Property management property id  is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('property_management_property_id').valid && tenantCreateForm.get('property_management_property_id').touched && tenantCreateForm.hasError('required', 'property_management_property_id')\">\n                    tenant Property management property id is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Property management unit id *</h3>\n                <input id=\"property_management_unit_id\" class=\"login-input\" name=\"property_management_unit_id\" type=\"text\" size=\"30\" pInputText placeholder=\"Property management unit id\" formControlName=\"property_management_unit_id\"\n                required=\"required\" data-error=\"tenant Property management unit id  is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('property_management_unit_id').valid && tenantCreateForm.get('property_management_unit_id').touched && tenantCreateForm.hasError('required', 'property_management_unit_id')\">\n                    tenant Property management unit id is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Property management resident id *</h3>\n                <input id=\"property_management_resident_id\" class=\"login-input\" name=\"property_management_resident_id\" type=\"text\" size=\"30\" pInputText placeholder=\"Property management resident id\" formControlName=\"property_management_resident_id\"\n                required=\"required\" data-error=\"tenant Property management resident id  is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('property_management_resident_id').valid && tenantCreateForm.get('property_management_resident_id').touched && tenantCreateForm.hasError('required', 'property_management_resident_id')\">\n                    tenant Property management resident id  is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Property management lease id *</h3>\n                <input id=\"property_management_lease_id\" class=\"login-input\" name=\"property_management_lease_id\" type=\"text\" size=\"30\" pInputText placeholder=\"Property management lease id\" formControlName=\"property_management_lease_id\"\n                required=\"required\" data-error=\"tenant Property management lease id  is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('property_management_lease_id').valid && tenantCreateForm.get('property_management_lease_id').touched && tenantCreateForm.hasError('required', 'property_management_lease_id')\">\n                    tenant Property management lease id is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Starting balance *</h3>\n                <input id=\"starting_balance\" class=\"login-input\" name=\"starting_balance\" type=\"text\" size=\"30\" pInputText placeholder=\"Starting balance\" formControlName=\"starting_balance\"\n                required=\"required\" data-error=\"tenant Starting balance is required.\">\n                <span *ngIf=\" !tenantCreateForm.get('starting_balance').valid && tenantCreateForm.get('starting_balance').touched && tenantCreateForm.hasError('required', 'starting_balance')\">\n                    tenant Starting balance is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Starting balance date *</h3>\n                <p-calendar class=\"login-input\" formControlName=\"starting_balance_date\"></p-calendar>\n                <span *ngIf=\" !tenantCreateForm.get('starting_balance_date').valid && tenantCreateForm.get('starting_balance_date').touched && tenantCreateForm.hasError('required', 'starting_balance_date')\">\n                    tenant Starting balance date is required</span>\n            </span>\n        </div>\n        <div class=\"ui-g\">\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Billing date*</h3>\n                <p-calendar class=\"login-input\" formControlName=\"billing_date\"></p-calendar>\n                <span *ngIf=\" !tenantCreateForm.get('billing_date').valid && tenantCreateForm.get('billing_date').touched && tenantCreateForm.hasError('required', 'billing_date')\">\n                    tenant Billing date is required</span>\n            </span>\n            <span class=\"forn-group ui-g-6\">\n                <h3 class=\"login-label\">Is active? *</h3>\n                <div class=\"login-input\">\n                    <p-dropdown [options]=\"truthy\" formControlName=\"is_active\" placeholder=\"Is active?\" optionLabel=\"label\" [showClear]=\"true\"></p-dropdown>\n                    <span *ngIf=\" !tenantCreateForm.get('is_active').valid && tenantCreateForm.get('is_active').touched && tenantCreateForm.hasError('required', 'is_active')\">\n                        tenant is active is required</span>\n        </div>\n        </span>\n        </div>\n        <p-footer class=\"\">\n            <button type=\"button\" pButton class=\"ui-button-secondary\" (click)=\"display=false\" label=\"close\">close</button>\n            <button type=\"submit\" pButton class=\"ui-button btn-orange\" label=\"Save changes\" *ngIf=\"tenantId == 0\">Create</button>\n            <button type=\"submit\" pButton class=\"ui-button btn-orange\" label=\"Save changes\" *ngIf=\"tenantId != 0\">Update</button>\n        </p-footer>\n    </form>\n</p-dialog>"
 
 /***/ }),
 
@@ -3416,6 +3732,12 @@ module.exports = "\n<div style=\"width:100%; float:left; height:auto\">\n  <div 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TenantsComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sites_services_tenants_service__ = __webpack_require__("./src/app/sites/services/tenants.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("./node_modules/@angular/forms/esm5/forms.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Rx__ = __webpack_require__("./node_modules/rxjs/_esm5/Rx.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_primeng_api__ = __webpack_require__("./node_modules/primeng/api.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_primeng_api___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_primeng_api__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3426,18 +3748,147 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
+
+
+
 var TenantsComponent = (function () {
-    function TenantsComponent() {
+    function TenantsComponent(tenantService, _fb, confirmationService, route) {
+        this.tenantService = tenantService;
+        this._fb = _fb;
+        this.confirmationService = confirmationService;
+        this.route = route;
+        this.edit = [];
+        this.tenantId = 0;
+        this.display = false;
+        this.tenantCreateForm = this._fb.group({
+            id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](),
+            first_name: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            last_name: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            email: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            status: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            unit_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            tenant_type: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            move_in_date: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            move_out_date: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            adult_occupants_count: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            minor_occupants_count: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            fix_occupants_count: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            is_late_fee_applicable: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            floor_plan_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            property_management_floor_plan_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            property_management_property_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            property_management_unit_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            property_management_resident_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            property_management_lease_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            starting_balance: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            starting_balance_date: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            billing_date: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            is_active: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required)
+        });
     }
     TenantsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            _this.site_id = +params['id'];
+            _this.tenantService.getTenants(_this.site_id)
+                .subscribe(function (data) {
+                console.log(data);
+                _this.tenants = data.tenants;
+                _this.units = data.units;
+            });
+        });
+        this.truthy = [{ label: "True", value: "TRUE" }, { label: "False", value: "FALSE" }];
+        this.edit = [
+            { label: 'Edit', icon: 'far fa-pencil', command: function (site) {
+                    _this.editTenantDialog(site);
+                } },
+            { label: 'Delete', icon: 'far fa-trash', command: function (event) {
+                    _this.deleteDialog(event);
+                } },
+        ];
     };
+    TenantsComponent.prototype.createTenant = function (tenantCreateForm) {
+        var _this = this;
+        console.log(tenantCreateForm);
+        if (tenantCreateForm.valid) {
+            if (this.tenantId == 0) {
+                this.tenantService.createTenant(tenantCreateForm.value, this.site_id).subscribe(function (res) {
+                    console.log(res);
+                    _this.tenants.unshift(res.tenant);
+                    _this.display = false;
+                    _this.tenantCreateForm.reset();
+                });
+            }
+            else {
+                this.tenantService.updateTenant(tenantCreateForm.value).subscribe(function (res) {
+                    _this.display = false;
+                    _this.tenantCreateForm.reset();
+                    for (var i = 0; i < _this.tenants.length; i++) {
+                        if (_this.tenants[i].id == res.tenant.id) {
+                            _this.tenants[i] = res.tenant;
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            this.setFormTouched(this.tenantCreateForm);
+        }
+    };
+    // function for validate all form fields
+    TenantsComponent.prototype.setFormTouched = function (form_obj) {
+        // this._toastr.error("please fill all * marked fields", 'Oops!', { showCloseButton: true });
+        Object.keys(form_obj.controls).forEach(function (field) {
+            var control = form_obj.get(field);
+            control.markAsTouched({ onlySelf: true });
+        });
+    };
+    TenantsComponent.prototype.showDialog = function () {
+        this.tenantCreateForm.reset();
+        this.display = true;
+        this.tenantId = 0;
+    };
+    TenantsComponent.prototype.editTenantDialog = function (tenant) {
+        this.tenantId = tenant.id;
+        this.tenantCreateForm.setValue(tenant);
+        this.display = true;
+    };
+    TenantsComponent.prototype.deleteDialog = function (tenantId) {
+        var _this = this;
+        this.confirmationService.confirm({
+            message: 'Are you sure that you want to proceed?',
+            header: 'Delete this tenant',
+            icon: 'fa fa-question-circle',
+            accept: function () {
+                _this.tenantService.deleteTenant(tenantId).subscribe(function (res) {
+                    for (var i = 0; i < _this.tenants.length; i++) {
+                        if (_this.tenants[i].id == tenantId) {
+                            _this.tenants.splice(i, 1);
+                            break;
+                        }
+                    }
+                });
+            },
+            reject: function () {
+                _this.msgs = [{ severity: 'info', summary: 'Rejected', detail: 'You have rejected' }];
+            }
+        });
+    };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", Object)
+    ], TenantsComponent.prototype, "site", void 0);
     TenantsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'quadlogic-tenants',
+            inputs: ['site'],
             template: __webpack_require__("./src/app/sites/tenants/tenants.component.html"),
             styles: [__webpack_require__("./src/app/sites/tenants/tenants.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__sites_services_tenants_service__["a" /* TenantsService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormBuilder"], __WEBPACK_IMPORTED_MODULE_4_primeng_api__["ConfirmationService"], __WEBPACK_IMPORTED_MODULE_5__angular_router__["ActivatedRoute"]])
     ], TenantsComponent);
     return TenantsComponent;
 }());
@@ -3456,7 +3907,7 @@ module.exports = ""
 /***/ "./src/app/sites/units/units.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p-dialog header=\"Godfather I\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n    <span>\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-6\">\n            <label>Section Name</label>\n              <div class=\"ui-inputgroup\">\n                 \n                  <input type=\"text\" pInputText placeholder=\"Username\">         \n              </div>\n          </div>\n          <div class=\"ui-g-6\">\n              <label>Section Name</label>\n                <div class=\"ui-inputgroup\">\n                   \n                    <input type=\"text\" pInputText placeholder=\"Username\">         \n                </div>\n            </div>\n<div class=\"ui-g-6\">\n  <p-dropdown [options]=\"cities\" placeholder=\"Select a City\"></p-dropdown>\n\n  <!-- <p>Selected City: {{selectedCity ? selectedCity.name : 'none'}}</p> -->\n</div>\n\n          </div>\n\n  </span>\n    <p-footer>\n        <button type=\"button\" pButton icon=\"fa-check\" (click)=\"display=false\" label=\"Yes\"></button>\n        <button type=\"button\" pButton icon=\"fa-close\" (click)=\"display=false\" label=\"No\"></button>\n    </p-footer>\n</p-dialog>\n<div class=\"ui-widget-header ql-search\" style=\"padding:4px 10px;border-bottom: 0 none\">\n    <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n    <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Global Filter\">\n    <!-- <button pButton type=\"button\" label=\"Click\" ></button> -->\n    <div style=\"float:right;\">\n        <button type=\"button\" (click)=\"showDialog()\" pButton label=\"Add Section\" styleClass=\"col-button\">Move</button>\n        <p-fileUpload mode=\"basic\" name=\"demo[]\" maxFileSize=\"1000000\" (onUpload)=\"onBasicUpload($event)\" label=\"Import\"></p-fileUpload>\n        <button type=\"button\" (click)=\"showDialog()\" pButton label=\"Add Section\">Add Section</button>\n    </div>\n</div>\n\n<p-dataTable [value]=\"units\" scrollable=\"true\" [globalFilter]=\"gb\" #dt>\n    <p-headerColumnGroup>\n        <p-row>\n            <p-column header=\"Identifier\" rowspan=\"2\"></p-column>\n            <p-column header=\"Residents\" rowspan=\"2\"></p-column>\n            <p-column header=\"Section Labels\" rowspan=\"2\"></p-column>\n            <p-column header=\"Meters\" colspan=\"4\"></p-column>\n        </p-row>\n        <p-row>\n            <p-column header=\"Electric\"></p-column>\n            <p-column header=\"Water\"></p-column>\n            <p-column header=\"Gas meter IDS\"></p-column>\n            <p-column header=\"\"></p-column>\n        </p-row>\n    </p-headerColumnGroup>\n\n    <p-column field=\"identifier\"></p-column>\n    <p-column field=\"residents\"></p-column>\n    <p-column field=\"sectionLabels\"></p-column>\n    <p-column field=\"electric\"></p-column>\n    <p-column field=\"water\"></p-column>\n    <p-column field=\"gasmeterIds\"></p-column>\n    <p-column styleClass=\"col-button\">\n        <ng-template pTemplate=\"header\">\n            <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n        </ng-template>\n        <ng-template let-car=\"rowData\" pTemplate=\"body\">\n            <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n        </ng-template>\n    </p-column>\n</p-dataTable>"
+module.exports = "<p-dialog header=\"Godfather I\" [(visible)]=\"display\" modal=\"modal\" [responsive]=\"true\" [width]=\"600\" [minWidth]=\"200\" [minY]=\"200\">\n    <span>\n      <div class=\"ui-g ui-fluid\">\n          <div class=\"ui-g-6\">\n            <label>Section Name</label>\n              <div class=\"ui-inputgroup\">\n                 \n                  <input type=\"text\" pInputText placeholder=\"Username\">         \n              </div>\n          </div>\n          <div class=\"ui-g-6\">\n              <label>Section Name</label>\n                <div class=\"ui-inputgroup\">\n                   \n                    <input type=\"text\" pInputText placeholder=\"Username\">         \n                </div>\n            </div>\n<div class=\"ui-g-6\">\n  <p-dropdown [options]=\"cities\" placeholder=\"Select a City\"></p-dropdown>\n\n  <!-- <p>Selected City: {{selectedCity ? selectedCity.name : 'none'}}</p> -->\n</div>\n\n          </div>\n\n  </span>\n    <p-footer>\n        <button type=\"button\" pButton icon=\"fa-check\" (click)=\"display=false\" label=\"Yes\"></button>\n        <button type=\"button\" pButton icon=\"fa-close\" (click)=\"display=false\" label=\"No\"></button>\n    </p-footer>\n</p-dialog>\n<div class=\"ui-widget-header ql-search\" style=\"padding:4px 10px;border-bottom: 0 none\">\n    <i class=\"fa fa-search\" style=\"margin:4px 4px 0 0\"></i>\n    <input #gb type=\"text\" pInputText size=\"50\" placeholder=\"Global Filter\">\n    <!-- <button pButton type=\"button\" label=\"Click\" ></button> -->\n    <div style=\"float:right;\">\n        <button type=\"button\" (click)=\"showDialog()\" pButton label=\"Add Section\" styleClass=\"col-button\">Move</button>\n        <p-fileUpload mode=\"basic\" name=\"file\" url=\"http://18.222.105.182/upload_records?name=units\" (onUpload)=\"onBasicUpload($event)\"></p-fileUpload>\n        <button type=\"button\" (click)=\"showDialog()\" pButton label=\"Add Section\">Add Section</button>\n    </div>\n</div>\n\n<p-dataTable [value]=\"units\" reorderableColumns=\"true\" [rows]=\"10\" [paginator]=\"true\" [pageLinks]=\"5\" [rowsPerPageOptions]=\"[5,10,20]\" [globalFilter]=\"gb\" #dt>\n    <p-headerColumnGroup>\n        <p-row>\n            <p-column [sortable]=\"true\" header=\"Identifier\"></p-column>\n            <p-column [sortable]=\"true\" header=\"Residents\"></p-column>\n            <p-column [sortable]=\"true\" header=\"Section Labels\" ></p-column>\n            <p-column [sortable]=\"true\" header=\"Meters\"></p-column>\n        </p-row>\n    </p-headerColumnGroup>\n\n    <p-column field=\"identifier\"></p-column>\n    <p-column field=\"residents\"></p-column>\n    <p-column field=\"section_labels\"></p-column>\n    <p-column field=\"gas_meter_id\"></p-column>\n    <!-- <p-column styleClass=\"col-button\">\n        <ng-template pTemplate=\"header\">\n            <!-- <button type=\"button\" pButton icon=\"fa-refresh\"></button> -->\n        <!-- </ng-template>\n        <ng-template let-car=\"rowData\" pTemplate=\"body\">\n            <p-splitButton class=\"site-edit float-right\" icon=\"far fa-ellipsis-v\" [model]=\"edit\"></p-splitButton>\n        </ng-template> -->\n    <!-- </p-column> -->\n</p-dataTable>"
 
 /***/ }),
 
@@ -3484,13 +3935,12 @@ var UnitsComponent = (function () {
         this.display = false;
     }
     UnitsComponent.prototype.ngOnInit = function () {
-        this.unitService.getUnits();
-        // .subscribe(
-        //   (data)=>{
-        //     console.log(data);
-        //     this.units = data.units;
-        //   }
-        // )
+        var _this = this;
+        this.unitService.getUnits()
+            .subscribe(function (data) {
+            console.log(data);
+            _this.units = data.units;
+        });
     };
     UnitsComponent.prototype.showDialog = function () {
         this.display = true;
@@ -3521,7 +3971,7 @@ var UnitsComponent = (function () {
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 var environment = {
     production: false,
-    host: "http://172.16.18.148:3000/"
+    host: "http://18.222.105.182/"
 };
 
 
