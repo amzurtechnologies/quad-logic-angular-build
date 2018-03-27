@@ -2827,13 +2827,12 @@ var MeterPageComponent = (function () {
         this.display = false;
     }
     MeterPageComponent.prototype.ngOnInit = function () {
-        // this.meterPageService.getMeters()
-        // .subscribe(
-        //   (data)=>{
-        //     console.log(data);
-        //     this.meters = data.meters;
-        //   }
-        // )
+        var _this = this;
+        this.meterPageService.getMeters()
+            .subscribe(function (data) {
+            console.log(data);
+            _this.meters = data.meters;
+        });
     };
     MeterPageComponent.prototype.showDialog = function () {
         this.display = true;
