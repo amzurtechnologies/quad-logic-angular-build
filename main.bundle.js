@@ -2849,7 +2849,7 @@ var MeterPageComponent = (function () {
         this.meterForm = this._fb.group({
             id: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](),
             meter_no: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
-            meter_type: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
+            meter_type: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null),
             meter_installation_date: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
             meter_out_of_service_date: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](),
             multiplier: new __WEBPACK_IMPORTED_MODULE_1__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_1__angular_forms__["Validators"].required),
@@ -2883,6 +2883,10 @@ var MeterPageComponent = (function () {
             if (res.success) {
                 res.meter.meter_installation_date = new Date(res.meter.meter_installation_date);
                 res.meter.meter_out_of_service_date = new Date(res.meter.meter_out_of_service_date);
+                res.meter.meter_type = 1;
+                res.meter.multiplier = 1;
+                res.meter.modifier = 1;
+                res.meter.is_active = true;
                 _this.meterForm.setValue(res.meter);
                 _this.display = true;
                 _this.formType = "Edit";
@@ -4082,7 +4086,7 @@ var TenantsComponent = (function () {
             status: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
             unit_id: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
             tenant_type: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
-            move_in_date: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](null, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
+            move_in_date: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](new Date("16-08-2016"), __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required),
             move_out_date: new __WEBPACK_IMPORTED_MODULE_2__angular_forms__["FormControl"](),
             adult_occupants_count: [0, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
             minor_occupants_count: [0, __WEBPACK_IMPORTED_MODULE_2__angular_forms__["Validators"].required],
@@ -4184,7 +4188,9 @@ var TenantsComponent = (function () {
             key = this.keys[i];
             var date_keys = ["move_in_date", "move_out_date", "starting_balance_date", "billing_date"];
             if (date_keys.indexOf(key) != -1) {
-                tenant[key] = new Date(tenant[key]);
+                console.log(tenant[key]);
+                tenant[key] = new Date();
+                // tenant[key] = new Date(tenant[key]) 
             }
             var truthy_keys = ["is_late_fee_applicable", "status", "is_active"];
             if (truthy_keys.indexOf(key) != -1) {
